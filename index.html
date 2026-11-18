@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product Manager</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="topbar">
+    <h1 class="brand">Product Manager</h1>
+    <button id="cart-toggle" class="btn btn-cart" aria-label="Open cart">
+      Cart <span id="cart-count" class="badge">0</span>
+    </button>
+  </header>
+
+  <main class="layout">
+
+    <!-- Toolbar: search, filter, sort, add -->
+    <section class="toolbar" aria-label="Product controls">
+      <input id="search-input" type="search" placeholder="Search products by name" autocomplete="off" />
+
+      <select id="category-filter" aria-label="Filter by category">
+        <option value="all">All categories</option>
+        <!-- options will be added by JS (use a Set for unique categories) -->
+      </select>
+
+      <select id="sort-select" aria-label="Sort products">
+        <option value="default">Sort: Default</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="name-asc">Name: A to Z</option>
+        <option value="name-desc">Name: Z to A</option>
+      </select>
+
+      <button id="add-product-btn" class="btn btn-primary">Add product</button>
+    </section>
+
+    <!-- Status: loading / error / empty -->
+    <div id="status" class="status" role="status" aria-live="polite" hidden></div>
+
+    <!-- Product grid (event delegation: one listener on this element) -->
+    <section id="product-list" class="grid" aria-label="Products">
+    </section>
+  </main>
+
+  <!-- Cart drawer -->
+  <aside id="cart-drawer" class="drawer" aria-label="Shopping cart" aria-hidden="true">
+    <div class="drawer-head">
+      <h2>Your cart</h2>
+      <button id="cart-close" class="btn btn-ghost" aria-label="Close cart">Close</button>
+    </div>
+
+    <ul id="cart-items" class="cart-items">
+    </ul>
+
+    <p id="cart-empty" class="empty" hidden>Your cart is empty. Add a product to get started.</p>
+
+    <div class="drawer-foot">
+      <div class="total-row"><span>Total</span><strong id="cart-total">₹0</strong></div>
+      <button id="clear-cart" class="btn btn-ghost">Clear cart</button>
+    </div>
+  </aside>
+  <div id="overlay" class="overlay" hidden></div>
+
+  <!-- Add / Edit modal -->
+  <dialog id="product-modal" class="modal">
+    <form id="product-form" novalidate>
+      <h2 id="modal-title">Add product</h2>
+      <input type="hidden" id="product-id" />
+
+      <label for="p-name">Name</label>
+      <input id="p-name" name="name" type="text" required />
+      <small class="error" data-error-for="name"></small>
+
+      <label for="p-price">Price (₹)</label>
+      <input id="p-price" name="price" type="number" min="0" step="0.01" required />
+      <small class="error" data-error-for="price"></small>
+
+      <label for="p-category">Category</label>
+      <input id="p-category" name="category" type="text" required />
+      <small class="error" data-error-for="category"></small>
+
+      <label for="p-image">Image URL (optional)</label>
+      <input id="p-image" name="image" type="text" />
+      <small class="error" data-error-for="image"></small>
+
+      <div class="modal-actions">
+        <button type="button" id="modal-cancel" class="btn btn-ghost">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save product</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Toast messages -->
+  <div id="toast-container" class="toasts" aria-live="polite"></div>
+
+  <!-- Reusable card template for JS rendering -->
+  <template id="product-card-template">
+    <article class="card">
+      <div class="card-img"></div>
+      <div class="card-body">
+        <span class="tag"></span>
+        <h3 class="card-title"></h3>
+        <p class="card-price"></p>
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-primary" data-action="add-to-cart">Add to cart</button>
+        <button class="btn btn-ghost" data-action="edit">Edit</button>
+        <button class="btn btn-danger" data-action="delete">Delete</button>
+      </div>
+    </article>
+  </template>
+
+  <script type="module" src="js/app.js"></script> 
+</body>
+</html>
